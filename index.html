@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apotheo Capital — Merchant Bank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0d1b2a;
+      --ink:    #1a2e42;
+      --gold:   #b89455;
+      --gold-lt:#c9a96e;
+      --stone:  #f4f1ec;
+      --white:  #ffffff;
+      --muted:  #7a8a96;
+      --rule:   rgba(184,148,85,0.35);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    section { scroll-margin-top: 90px; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      background: var(--white);
+      color: var(--navy);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      height: 72px;
+      background: rgba(13,27,42,0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(184,148,85,0.2);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold-lt); }
+
+    .nav-portal {
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      border: 1px solid rgba(184,148,85,0.45);
+      padding: 7px 18px;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-portal:hover {
+      background: rgba(184,148,85,0.1);
+      border-color: var(--gold);
+    }
+
+    /* ── INVESTOR PORTAL OVERLAY ── */
+    .portal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .portal-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .portal-back {
+      position: absolute;
+      top: 28px;
+      left: 40px;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.2s;
+    }
+
+    .portal-back:hover { color: rgba(255,255,255,0.8); }
+    .portal-back::before { content: '←'; font-size: 0.85rem; }
+
+    .portal-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 0 24px;
+    }
+
+    .portal-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .portal-logo span { color: var(--gold); }
+
+    .portal-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .portal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--white);
+      text-align: center;
+      margin-bottom: 40px;
+      line-height: 1.2;
+    }
+
+    .portal-field {
+      margin-bottom: 20px;
+    }
+
+    .portal-field label {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 8px;
+    }
+
+    .portal-field input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 300;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .portal-field input::placeholder { color: rgba(255,255,255,0.2); }
+    .portal-field input:focus { border-color: rgba(184,148,85,0.6); }
+
+    .portal-submit {
+      width: 100%;
+      margin-top: 8px;
+      padding: 14px;
+      background: none;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .portal-submit:hover {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .portal-rule {
+      border: none;
+      border-top: 1px solid rgba(184,148,85,0.2);
+      margin: 36px 0 0;
+    }
+
+    .portal-error {
+      font-size: 0.78rem;
+      color: #c47f7f;
+      text-align: center;
+      margin-top: 14px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .portal-error.visible { opacity: 1; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: var(--stone);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 140px 60px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--navy);
+      max-width: 820px;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold-lt);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 620px;
+      line-height: 1.85;
+      margin-bottom: 60px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 56px;
+      margin-bottom: 56px;
+      padding-top: 40px;
+      border-top: 1px solid var(--rule);
+      max-width: 620px;
+    }
+
+    .hero-stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .hero-stat-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat-footnote-mark {
+      font-size: 0.75rem;
+      vertical-align: super;
+      color: var(--muted);
+      margin-left: 1px;
+    }
+
+    .footer-footnote {
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      opacity: 0.65;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 4px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .hero-cta:hover { color: var(--navy); border-color: rgba(13,27,42,0.3); }
+    .hero-cta::after { content: '→'; font-size: 0.85rem; }
+
+    .hero-rule {
+      position: absolute;
+      right: 60px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 240px;
+      background: linear-gradient(to bottom, transparent, var(--gold) 40%, var(--gold) 60%, transparent);
+      opacity: 0.2;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 140px 60px; }
+
+    .section-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--navy);
+      max-width: 680px;
+    }
+
+    .section-title em { font-style: italic; }
+
+    hr.rule {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 40px 0;
+      max-width: 80px;
+    }
+
+    hr.rule-light {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 40px 0;
+      max-width: 80px;
+    }
+
+    /* ── CAPABILITIES / VALUE PROPOSITION ── */
+    .capabilities { background: var(--white); }
+
+    .cap-intro-single {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 720px;
+      margin-bottom: 72px;
+    }
+
+    .vp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+    }
+
+    .vp-col {
+      padding: 48px 48px 48px 0;
+    }
+
+    .vp-col:not(:last-child) {
+      padding-right: 48px;
+      margin-right: 48px;
+      border-right: 1px solid rgba(13,27,42,0.1);
+    }
+
+    .vp-col-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .vp-col h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 28px;
+      letter-spacing: 0.01em;
+    }
+
+    .vp-col ul { list-style: none; padding: 0; }
+
+    .vp-col ul li {
+      font-size: 0.84rem;
+      color: var(--muted);
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(13,27,42,0.06);
+      display: flex;
+      gap: 14px;
+      line-height: 1.65;
+    }
+
+    .vp-col ul li::before {
+      content: '';
+      width: 16px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+      margin-top: 10px;
+    }
+
+    /* ── APPROACH (Why Apotheo) ── */
+    .approach { background: var(--stone); }
+
+    .approach-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      margin-top: 60px;
+      align-items: start;
+    }
+
+    .approach-text p {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 24px;
+    }
+
+    .approach-pillars {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pillar {
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(13,27,42,0.1);
+    }
+
+    .pillar:first-child { border-top: 1px solid rgba(13,27,42,0.1); }
+
+    .pillar-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .pillar p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ── LEADERSHIP ── */
+    .leadership { background: var(--white); }
+
+    .leadership-list {
+      margin-top: 60px;
+      border-top: 1px solid rgba(13,27,42,0.1);
+    }
+
+    .leader-item {
+      border-bottom: 1px solid rgba(13,27,42,0.1);
+      cursor: pointer;
+    }
+
+    .leader-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 0;
+      transition: opacity 0.2s;
+    }
+
+    .leader-summary:hover { opacity: 0.65; }
+
+    .leader-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      color: var(--navy);
+      letter-spacing: 0.02em;
+    }
+
+    .leader-indicator {
+      font-size: 1.6rem;
+      color: var(--gold);
+      font-weight: 300;
+      line-height: 1;
+      transition: transform 0.3s ease;
+      user-select: none;
+    }
+
+    .leader-item.open .leader-indicator {
+      transform: rotate(45deg);
+    }
+
+    .leader-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s ease;
+    }
+
+    .leader-item.open .leader-detail {
+      max-height: 1400px;
+    }
+
+    .leader-detail-inner {
+      padding-bottom: 48px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .leader-bio-text {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .leader-bio-text p { margin-bottom: 1.1em; }
+    .leader-bio-text p:last-child { margin-bottom: 0; }
+
+    .leader-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-top: 2px;
+    }
+
+    .pedigree-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: var(--navy);
+      border: 1px solid rgba(13,27,42,0.15);
+      padding: 3px 10px;
+    }
+
+    /* ── PHILOSOPHY TOGGLE ── */
+    .philosophy { background: var(--stone); }
+
+    .philosophy-intro {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 560px;
+      margin: 20px 0 0;
+    }
+
+    .philosophy-toggle {
+      margin-top: 60px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      border-top: 1px solid rgba(13,27,42,0.1);
+      align-items: start;
+    }
+
+    .philo-labels {
+      padding-top: 52px;
+      border-right: 1px solid rgba(13,27,42,0.1);
+      padding-right: 0;
+      position: sticky;
+      top: 110px;
+    }
+
+    .philo-label-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      border-left: 2px solid transparent;
+      padding: 13px 0 13px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(13,27,42,0.32);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      line-height: 1.4;
+    }
+
+    .philo-label-btn:hover {
+      color: rgba(13,27,42,0.65);
+    }
+
+    .philo-label-btn.active {
+      color: var(--navy);
+      border-left-color: var(--gold);
+    }
+
+    .philo-detail {
+      padding-top: 52px;
+      padding-left: 72px;
+      min-height: 280px;
+    }
+
+    .philo-item { display: none; }
+    .philo-item.active { display: block; animation: philoFade 0.3s ease; }
+
+    @keyframes philoFade {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .philo-item h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+
+    .philo-item p {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 520px;
+    }
+
+    /* ── NAME ORIGIN ── */
+    .name-origin {
+      background: var(--navy);
+      padding: 96px 60px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .dict-entry {
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .dict-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .dict-word {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--gold-lt);
+      line-height: 1;
+    }
+
+    .dict-phonetic {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.38);
+      letter-spacing: 0.04em;
+      font-style: italic;
+    }
+
+    .dict-pos {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.28);
+      letter-spacing: 0.1em;
+      font-style: italic;
+    }
+
+    .dict-rule {
+      border-top: 1px solid rgba(184,148,85,0.25);
+      margin-bottom: 20px;
+    }
+
+    .dict-etymology {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em;
+      margin-bottom: 14px;
+      line-height: 1.8;
+    }
+
+    .dict-etym-label {
+      font-style: italic;
+      color: var(--gold);
+      opacity: 0.75;
+    }
+
+    .dict-definition {
+      font-size: 0.92rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.85;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── CONTACT ── */
+    .contact { background: var(--stone); }
+
+    .contact-info-only {
+      max-width: 560px;
+      margin-top: 60px;
+    }
+
+    .contact-info-lead {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 44px;
+    }
+
+    .contact-detail { margin-bottom: 28px; }
+
+    .contact-detail-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 5px;
+    }
+
+    .contact-detail a,
+    .contact-detail span {
+      font-size: 0.92rem;
+      color: var(--navy);
+      text-decoration: none;
+    }
+
+    .contact-detail a:hover { color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--stone);
+      padding: 32px 60px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+
+    .footer-logo span { color: var(--gold); }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .footer-disclaimer {
+      font-size: 0.62rem;
+      color: var(--muted);
+      opacity: 0.5;
+      line-height: 1.75;
+      text-align: center;
+      max-width: 680px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(13,27,42,0.08);
+    }
+
+    .footer-disclaimer a {
+      color: var(--muted);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .footer-disclaimer a:hover { color: var(--navy); }
+
+    /* ── HAMBURGER ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+      z-index: 110;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1px;
+      background: var(--white);
+      transition: transform 0.3s ease, opacity 0.2s ease;
+    }
+
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 95;
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      padding: 110px 40px 60px;
+      transform: translateX(100%);
+      transition: transform 0.4s ease;
+    }
+
+    .mobile-menu.open { transform: translateX(0); }
+
+    .mobile-menu-links {
+      list-style: none;
+      flex: 1;
+    }
+
+    .mobile-menu-links li {
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .mobile-menu-links a {
+      display: block;
+      padding: 22px 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu-links a:hover { color: var(--gold-lt); }
+
+    .mobile-menu-portal {
+      display: block;
+      text-align: center;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(184,148,85,0.45);
+      padding: 15px;
+      text-decoration: none;
+      margin-top: 44px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .mobile-menu-portal:hover {
+      background: rgba(184,148,85,0.1);
+      border-color: var(--gold);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 28px; }
+      .nav-links { display: none; }
+      .nav-portal { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .hero { padding: 140px 28px 72px; }
+      .hero-rule { display: none; }
+      .hero-stats { display: flex; flex-direction: column; gap: 0; max-width: 100%; padding-top: 28px; margin-bottom: 40px; }
+      .hero-stats > div { display: flex; align-items: baseline; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+      .hero-stats > div:first-child { border-top: none; padding-top: 0; }
+      .hero-stat-value { font-size: 1.8rem; margin-bottom: 0; }
+      .hero-stat-label { font-size: 0.58rem; letter-spacing: 0.14em; }
+
+      section { padding: 72px 28px; }
+
+      .approach-body { grid-template-columns: 1fr; gap: 40px; }
+      .philosophy-toggle { grid-template-columns: 1fr; }
+      .philo-labels { position: static; border-right: none; border-bottom: 1px solid rgba(13,27,42,0.1); padding-top: 32px; padding-bottom: 8px; display: flex; flex-wrap: wrap; gap: 0; }
+      .philo-label-btn { border-left: none; border-bottom: 2px solid transparent; padding: 10px 16px 10px 0; width: auto; }
+      .philo-label-btn.active { border-left: none; border-bottom-color: var(--gold); }
+      .philo-detail { padding-left: 0; padding-top: 40px; }
+      .vp-grid { grid-template-columns: 1fr; }
+      .vp-col:not(:last-child) { margin-right: 0; border-right: none; padding-right: 0; }
+      .vp-col { padding: 36px 0; }
+
+      .leader-detail-inner { grid-template-columns: 1fr; gap: 24px; }
+
+      footer { flex-direction: column; gap: 12px; text-align: center; padding: 28px; }
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Apotheo<span>&nbsp;Capital</span></a>
+    <ul class="nav-links">
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#approach">Why Apotheo</a></li>
+      <li><a href="#leadership">Leadership</a></li>
+
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#" class="nav-portal" onclick="openPortal(); return false;">Investor Portal</a>
+    <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul class="mobile-menu-links">
+      <li><a href="#capabilities" onclick="closeMenu()">Capabilities</a></li>
+      <li><a href="#approach" onclick="closeMenu()">Why Apotheo</a></li>
+      <li><a href="#leadership" onclick="closeMenu()">Leadership</a></li>
+      <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+    </ul>
+    <a href="#" class="mobile-menu-portal" onclick="closeMenu(); openPortal(); return false;">Investor Portal</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Strategic Capital<br>and Advice for<br><em>Complex Situations.</em></h1>
+    <p class="hero-sub">
+      Apotheo Capital is a private investment and financial advisory firm led by owners who have decades of experience investing in and advising on cutting-edge, complex transactions. Our collective knowledge brings unique perspectives, and we deliver solutions designed for the specific needs of our investors, partners and clients. We focus on opportunities where we believe that our involvement will maximize alignment and outcomes.
+    </p>
+
+    <div class="hero-stats">
+      <div>
+        <p class="hero-stat-value">$550B+<span class="stat-footnote-mark">*</span></p>
+        <p class="hero-stat-label">Transaction value completed</p>
+      </div>
+      <div>
+        <p class="hero-stat-value">150+<span class="stat-footnote-mark">*</span></p>
+        <p class="hero-stat-label">Transactions closed</p>
+      </div>
+      <div>
+        <p class="hero-stat-value">20+</p>
+        <p class="hero-stat-label">Years Average<br>Senior Experience</p>
+      </div>
+    </div>
+
+    <a href="#contact" class="hero-cta">Begin a conversation</a>
+    <div class="hero-rule"></div>
+  </section>
+
+  <!-- CAPABILITIES / VALUE PROPOSITION -->
+  <section class="capabilities" id="capabilities">
+    <p class="section-eyebrow">Our Value Proposition</p>
+    <h2 class="section-title">Advice. Capital.<br><em>Integrated solutions.</em></h2>
+    <hr class="rule" />
+
+    <p class="cap-intro-single">
+      Apotheo Capital is a financial advisory and private capital firm focused on delivering creative, purpose-built solutions that address the specific needs of our investors, partners and clients, particularly in situations where access to capital is challenging.    </p>
+
+    <div class="vp-grid">
+      <div class="vp-col">
+        <p class="vp-col-eyebrow">Advisory</p>
+        <h3>Financial Advisory Services</h3>
+        <ul>
+          <li>Innovative approaches for companies and creditors on intricate M&amp;A, capital solutions and financing transactions</li>
+          <li>Deep Liability Management expertise; exchange offers, waivers &amp; amendments, debt repurchases, restructurings, and consent solicitations</li>
+          <li>Advise with an investor mindset focused on aligning incentives and maximizing value</li>
+        </ul>
+      </div>
+      <div class="vp-col">
+        <p class="vp-col-eyebrow">Investing</p>
+        <h3>Private Capital</h3>
+        <ul>
+          <li>Private equity and capital solutions for businesses where potential is being masked by business, industry, or structural complexity</li>
+          <li>Investment themes include corporate carve-outs, distressed assets, family-owned businesses, and asset-backed finance, as well as out-of-favor and hung sale processes that others overlook</li>
+          <li>Flexible approach across the capital structure</li>
+          <li>Long-lived investment horizon, unencumbered by traditional fund constraints</li>
+        </ul>
+      </div>
+      <div class="vp-col">
+        <p class="vp-col-eyebrow">Integrated</p>
+        <h3>Capital and Advice, Working Together</h3>
+        <ul>
+          <li>Differentiated approach: leverage both private capital and advisory skills to advise on and invest in structured transactions and financings</li>
+          <li>Highly creative transaction structuring for fraught and unconventional situations</li>
+          <li>Flexibility on remuneration to align long-term interests with clients and partners</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY AUDEN -->
+  <section class="approach" id="approach">
+    <p class="section-eyebrow">Why Apotheo</p>
+    <h2 class="section-title">Aligned interests.<br><em>Unconflicted advice.</em></h2>
+    <hr class="rule" />
+
+    <div class="approach-body">
+      <div class="approach-text">
+        <p>Apotheo Capital was founded on a straightforward belief: the best outcomes come when advisors and investors share the same incentives as their clients, whether advising, investing, or doing both. We take on a focused number of mandates, engaging senior professionals at every stage and bringing creative, unconventional thinking to challenging situations where conventional approaches have fallen short.</p>
+      </div>
+
+      <div class="approach-pillars">
+        <div class="pillar">
+          <p class="pillar-label">Selectivity &amp; Senior Attention</p>
+          <p>We engage selectively, and only where we believe we can make a meaningful impact. Every situation receives the full attention of our senior team from initial evaluation through execution, bringing the judgment that comes from decades of experience advising on and investing in complex capital structures.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-label">Investor Mindset Meets Advisory Expertise</p>
+          <p>Apotheo combines active principal investing experience with financial advisory. We evaluate every engagement through the lens of investors allocating real capital, bringing a depth of judgment and commercial perspective that purely fee-driven advisors cannot replicate.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-label">Clear Alignment of Incentives</p>
+          <p>Our economics are designed to reflect outcomes. We structure engagements so that a meaningful portion of compensation is tied to value realized, aligning our incentives with those of our clients and capital partners.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-label">Discreet, Boutique Platform</p>
+          <p>Our size is a strategic advantage. We operate discreetly, protecting client confidentiality while navigating complex stakeholder dynamics across companies, lenders, and investors in sensitive situations.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-label">Proven at the Highest Level</p>
+          <p>The Apotheo team has advised on and structured some of the most complex capital structure transactions in recent history (~$550 billion in value), earning multiple industry recognitions along the way. Clients receive the sophistication and judgment of a top-tier platform, without the bureaucracy or diffusion of attention that often accompanies it.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-label">Built from Conviction</p>
+          <p>We founded Apotheo on the conviction that a focused, intentional platform can deliver meaningfully better outcomes in complex situations. By combining advisory expertise with investing experience, we bring genuine alignment, creativity, and long-term perspective to every engagement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERSHIP -->
+  <section class="leadership" id="leadership">
+    <p class="section-eyebrow">Our Team</p>
+    <h2 class="section-title">Principals with <em>proven track records</em> at the <em>highest level.</em></h2>
+    <hr class="rule" />
+
+    <div class="leadership-list">
+
+      <div class="leader-item" onclick="toggleLeader(this)">
+        <div class="leader-summary">
+          <p class="leader-name">Ari Lefkovits</p>
+          <span class="leader-indicator">+</span>
+        </div>
+        <div class="leader-detail">
+          <div class="leader-detail-inner">
+            <div class="leader-bio-text">
+              <p>Ari Lefkovits is Managing Partner of Apotheo and previously spent his career at Lazard, where he was a Managing Director advising on capital solutions, restructuring, and liability management transactions totaling more than $300 billion in aggregate value.</p>
+              <p>Lefkovits has nearly 25 years of experience advising investors, senior executives, and boards of directors on complex corporate finance matters. During his tenure at Lazard, he worked in both New York and London and advised on many of the firm's largest and most complex engagements.</p>
+              <p>He has advised companies, boards, creditors, investors, unions, and government entities across a wide range of situations, including mergers and acquisitions, restructurings and reorganizations, debt exchanges and other liability management transactions, spin-offs, financings, and joint ventures.</p>
+              <p>Lefkovits has testified before the U.S. Bankruptcy Court, various state courts, and the New York Stock Exchange. He speaks frequently on industry panels and in the press and has been recognized as one of Turnarounds &amp; Workouts' "People to Watch" and one of The M&amp;A Advisor's "40 Under 40" corporate finance professionals.</p>
+              <p>He earned an A.B., magna cum laude, from Dartmouth College and a J.D., with distinction, from Stanford Law School.</p>
+              <p><em>Ari Lefkovits is a Registered Representative of BA Securities, LLC.</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="leader-item" onclick="toggleLeader(this)">
+        <div class="leader-summary">
+          <p class="leader-name">Alice Chong</p>
+          <span class="leader-indicator">+</span>
+        </div>
+        <div class="leader-detail">
+          <div class="leader-detail-inner">
+            <div class="leader-bio-text">
+              <p>Alice Chong has extensive experience advising companies, governments, and other stakeholders on complex restructuring, M&amp;A, and financing transactions across a broad range of industries.</p>
+              <p>Prior to joining Apotheo, Chong was a Managing Director in the restructuring group at Guggenheim Securities. Earlier in her career she held roles at Millstein &amp; Co., Duff &amp; Phelps, and Lazard, where she advised companies and creditors on restructuring and strategic transactions.</p>
+              <p>Chong began her career at Lazard focusing on mergers and acquisitions advisory in the Technology, Media, and Telecommunications sectors.</p>
+              <p>She received a B.S. in Business Administration and a B.A. in Political Science from University of California, Berkeley.</p>
+              <p><em>Alice Chong is a Registered Representative of BA Securities, LLC.</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="leader-item" onclick="toggleLeader(this)">
+        <div class="leader-summary">
+          <p class="leader-name">Jay Losty</p>
+          <span class="leader-indicator">+</span>
+        </div>
+        <div class="leader-detail">
+          <div class="leader-detail-inner">
+            <div class="leader-bio-text">
+              <p>Jay Losty focuses on financing solutions and complex capital structure situations across a range of industries.</p>
+              <p>Prior to joining Apotheo, Losty worked in the Investment Banking Division at Goldman Sachs, where he executed financing transactions across leveraged finance, structured finance, and investment grade markets for corporate and financial sponsor clients.</p>
+              <p>Losty also has private equity experience working closely with portfolio company management teams on investment and strategic initiatives, including add-on acquisitions and recapitalizations.</p>
+              <p>Losty earned a B.A. in History from Yale University.</p>
+              <p><em>Jay Losty is a Registered Representative of BA Securities, LLC.</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="leader-item" onclick="toggleLeader(this)">
+        <div class="leader-summary">
+          <p class="leader-name">Ross Weiner</p>
+          <span class="leader-indicator">+</span>
+        </div>
+        <div class="leader-detail">
+          <div class="leader-detail-inner">
+            <div class="leader-bio-text">
+              <p>Ross Weiner has over 30 years of experience as an investor and advisor across credit markets, restructurings, and special situations.</p>
+              <p>Prior to joining Apotheo, Weiner served as a Senior Advisor at Searchlight Capital Partners, where he sourced and evaluated investment opportunities for the firm's Credit Opportunities strategy and advised on portfolio positions.</p>
+              <p>Previously, Weiner was an investment manager at Millennium Management, where he led opportunistic and event-driven investments across credit and equity markets. Earlier in his career he held investment roles at Trilogy Capital Management, Litespeed Management, and Gracie Capital, managing portfolios focused on distressed debt, leveraged loans, and special situations.</p>
+              <p>Earlier in his career, Weiner was a Managing Director in the High Yield and Bankruptcy Group at Bear, Stearns &amp; Co. and began his career in restructuring and high yield investment banking at Alex. Brown &amp; Sons.</p>
+              <p>Weiner earned a B.S. in Economics and Industrial Management from Carnegie Mellon University.</p>
+              <p><em>Ross Weiner is a Registered Representative of BA Securities, LLC.</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="leader-item" onclick="toggleLeader(this)">
+        <div class="leader-summary">
+          <p class="leader-name">Kate Ditchfield</p>
+          <span class="leader-indicator">+</span>
+        </div>
+        <div class="leader-detail">
+          <div class="leader-detail-inner">
+            <div class="leader-bio-text">
+              <p>Kate Ditchfield serves as Chief of Staff at Apotheo, where she supports firm leadership across strategic priorities, operational execution, and internal coordination.</p>
+              <p>Ditchfield works closely with the firm's partners to translate strategic initiatives into structured execution, overseeing key operational processes and helping coordinate initiatives across advisors, partners, and stakeholders.</p>
+              <p>Prior to joining Apotheo, Ditchfield held roles supporting senior executives and founders, focusing on operational strategy, business development coordination, and leadership support in high-growth organizations.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NAME ORIGIN -->
+  <section class="name-origin" id="name">
+    <div class="dict-entry">
+      <p class="section-eyebrow" style="margin-bottom:28px;">Our Name</p>
+      <div class="dict-header">
+        <span class="dict-word">Apotheo</span>
+        <span class="dict-phonetic">/əˈpɒθiːoʊ/</span>
+        <span class="dict-pos">prop. n.</span>
+      </div>
+      <div class="dict-rule"></div>
+      <p class="dict-etymology">
+        <span class="dict-etym-label">Greek</span> &nbsp;<em>apotheosis</em>, transformation or elevation to a higher state
+      </p>
+      <p class="dict-definition"><em>We chose the name Apotheo to reflect moments of transformation, when complexity gives way to clarity and superior outcomes become possible. Success in the situations we focus on demands disciplined thinking, sound judgment, and the ability to navigate competing priorities; at Apotheo, we bring that perspective to every engagement.</em></p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <p class="section-eyebrow">Contact</p>
+    <h2 class="section-title">Begin a <em>conversation.</em></h2>
+    <hr class="rule-light" />
+
+    <div class="contact-info-only">
+      <p class="contact-info-lead">
+        We work with a select group of clients and partners on transactions where our involvement meaningfully moves the needle. If you are exploring a circumstance where access to capital is challenging, including a merger or acquisition, restructuring, financing, or an investment partnership, we welcome the conversation.
+      </p>
+      <div class="contact-detail">
+        <p class="contact-detail-label">Location</p>
+        <span>120 5th Avenue, Floor 3<br>New York, NY 10011</span>
+      </div>
+      <div class="contact-detail">
+        <p class="contact-detail-label">General Inquiries</p>
+        <a href="mailto:info@apotheopartners.com">info@apotheopartners.com</a>
+      </div>
+      <div class="contact-detail">
+        <p class="contact-detail-label">Careers</p>
+        <a href="mailto:careers@apotheopartners.com">careers@apotheopartners.com</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVESTOR PORTAL OVERLAY -->
+  <div class="portal-overlay" id="portalOverlay">
+    <button class="portal-back" onclick="closePortal()">Back to site</button>
+    <div class="portal-card">
+      <div class="portal-logo">Apotheo<span>&nbsp;Capital</span></div>
+      <p class="portal-eyebrow">Investor Portal</p>
+      <h2 class="portal-title">Sign in to your<br><em>account.</em></h2>
+      <form onsubmit="return false;">
+        <div class="portal-field">
+          <label for="portal-email">Email address</label>
+          <input type="email" id="portal-email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div class="portal-field">
+          <label for="portal-password">Password</label>
+          <input type="password" id="portal-password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button type="submit" class="portal-submit" onclick="portalLogin()">Sign In</button>
+        <p class="portal-error" id="portalError">Incorrect email or password.</p>
+      </form>
+      <hr class="portal-rule" />
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Apotheo<span>&nbsp;Capital</span></div>
+    <p class="footer-copy">&copy; 2026 Apotheo Capital. All rights reserved.</p>
+    <p class="footer-footnote">* Includes transactions involving Apotheo Capital professionals while employed by previous firms or organizations.</p>
+    <p class="footer-disclaimer">Securities products and investment banking services are offered through BA Securities, LLC. Member <a href="https://www.finra.org" target="_blank" rel="noopener">FINRA</a> / <a href="https://www.sipc.org" target="_blank" rel="noopener">SIPC</a>. Apotheo Capital LLC and BA Securities, LLC are separate, unaffiliated entities. To learn more about the professional background of Apotheo Capital LLC and our Registered Representatives, please visit <a href="https://brokercheck.finra.org" target="_blank" rel="noopener">FINRA BrokerCheck</a>. Past performance, awards, or testimonials are not indicative of future results. No guarantee of future performance or success is implied.</p>
+  </footer>
+
+  <script>
+    function toggleLeader(item) {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.leader-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // Mobile menu
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const burger = document.getElementById('hamburger');
+      const isOpen = menu.classList.contains('open');
+      if (isOpen) {
+        menu.classList.remove('open');
+        burger.classList.remove('open');
+        document.body.style.overflow = '';
+      } else {
+        menu.classList.add('open');
+        burger.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeMenu() {
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Investor portal
+    function openPortal() {
+      document.getElementById('portalOverlay').classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function portalLogin() {
+      document.getElementById('portalError').classList.add('visible');
+    }
+
+    function closePortal() {
+      document.getElementById('portalOverlay').classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closePortal();
+    });
+
+  </script>
+
+</body>
+</html>
